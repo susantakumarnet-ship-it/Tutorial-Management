@@ -4,7 +4,7 @@ import { env } from '../../config/env';
 import { pool, query, withTx } from '../../db/pool';
 import type { Role } from '../../middleware/auth';
 import { sms } from '../../services/sms';
-import { badRequest, conflict, forbidden, notFound, tooMany, unauthorized } from '../../utils/errors';
+import { AppError, badRequest, conflict, forbidden, notFound, tooMany, unauthorized } from '../../utils/errors';
 import { logger } from '../../utils/logger';
 import { maskPhone } from '../../utils/validators';
 
@@ -106,7 +106,7 @@ export async function register(input: { role: 'PARENT' | 'TUTOR'; fullName: stri
 export async function requestLoginOtp(phone: string) {
   const user = await findUserByPhone(phone);
   // Unverified sign-ups may also request a code (used by "Resend OTP"); verifying proves phone ownership.
-  if (!user) throw notFound('Account');
+  if (!user) throw new AppError(404, 'NOT_REGISTERED', 'No account found for this number. Please sign up as a parent or tutor first.');
   if (user.status !== 'ACTIVE') throw forbidden('This account has been blocked. Please contact support.');
   return issueOtp(phone);
 }

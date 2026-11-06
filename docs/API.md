@@ -41,6 +41,11 @@ Phone numbers accept `9876543210`, `09876543210`, `+919876543210` and are normal
 
 `devOtp` is present only when the server runs with `OTP_DEV_MODE=true` (refused in production).
 
+Accounts are self-registered: a parent or tutor must first `POST /auth/register` (choosing the role) and verify the OTP. Afterwards they log in with just their phone number via `/auth/login` + `/auth/verify-otp`.
+- `/auth/login` for a number that has never registered → `404 NOT_REGISTERED` ("No account found for this number. Please sign up as a parent or tutor first."). The app shows a **Sign up** button.
+- `/auth/register` for a number that already exists → `409 CONFLICT` ("…Please log in instead.").
+- Admin accounts cannot self-register; they are created with `npm run create-admin`.
+
 ## Reference data (public)
 
 | GET | Response |

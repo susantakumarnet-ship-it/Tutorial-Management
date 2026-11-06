@@ -96,7 +96,7 @@ class LoginViewModel @Inject constructor(private val auth: AuthRepository) : Vie
             when (val r = auth.requestLoginOtp(phone)) {
                 is ApiResult.Success -> _state.update { it.copy(loading = false, navigateToOtp = OtpNav(phone, r.data.otpSentTo, r.data.devOtp)) }
                 is ApiResult.Failure -> _state.update {
-                    it.copy(loading = false, notRegistered = r.httpCode == 404, error = if (r.httpCode == 404) "No account found for this number." else r.message)
+                    it.copy(loading = false, notRegistered = r.httpCode == 404, error = if (r.httpCode == 404) "No account found for this number. Sign up as a parent or tutor first." else r.message)
                 }
             }
         }

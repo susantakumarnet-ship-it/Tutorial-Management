@@ -22,6 +22,30 @@ describe('authentication', () => {
     expect(me.body.id).toBe(ok.body.user.id);
   });
 
+  it('requires self-registration before phone login', async () => {
+    const phone = nextPhone();
+    const before = await api().post('/api/v1/auth/login').send({ phone }).expect(404);
+    expect(before.body.error.code).toBe('NOT_REGISTERED');
+    expect(before.body.error.message).toMatch(/sign up as a parent or tutor/i);
+
+    const reg = await api()
+      .post('/api/v1/auth/register')
+      .send({ role: 'TUTOR', fullName: 'Ravi Shankar', phone, email: `ravi${phone}@example.com` })
+      .expect(201);
+    await api().post('/api/v1/auth/verify-otp').send({ phone, code: reg.body.devOtp }).expect(200);
+    const dup = await api()
+      .post('/api/v1/auth/register')
+      .send({ role: 'PARENT', fullName: 'Ravi Shankar', phone, email: `ravi2${phone}@example.com` })
+      .expect(409);
+    expect(dup.body.error.message).toMatch(/log in instead/i);
+
+    // Expire the resend cooldown, then log in with just the phone number + OTP.
+    await pool.query(`UPDATE otp_codes SET created_at = now() - interval '1 minute' WHERE phone = $1`, [`+91${phone}`]);
+    const login = await api().post('/api/v1/auth/login').send({ phone }).expect(200);
+    const ok = await api().post('/api/v1/auth/verify-otp').send({ phone, code: login.body.devOtp }).expect(200);
+    expect(ok.body.user.role).toBe('TUTOR');
+  });
+
   it('validates input fields', async () => {
     const res = await api()
       .post('/api/v1/auth/register')
