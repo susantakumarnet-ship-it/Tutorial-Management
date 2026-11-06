@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Graduation cap over an open book, sized for the 108dp adaptive-icon canvas (safe zone 66dp). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- cap -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,30 L80,41 L54,52 L28,41 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M38,46 L38,55 C38,59 45,62 54,62 C63,62 70,59 70,55 L70,46 L54,53 Z" />
+    <!-- tassel -->
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M77,42.5 L79,42.5 L79,56 L80.5,60 L75.5,60 L77,56 Z" />
+    <!-- book -->
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M30,66 C38,63 47,64 53,68 L53,80 C47,76 38,75 30,78 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M78,66 C70,63 61,64 55,68 L55,80 C61,76 70,75 78,78 Z" />
+</vector>

@@ -1,0 +1,26 @@
+# Dependencies & build output
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+coverage/
+
+# Local data & secrets
+.env
+.env.local
+.env.*.local
+.pgdata/
+uploads/
+local.properties
+google-services.json
+*.jks
+*.keystore
+
+# Tooling / OS
+.gradle/
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.log
+.DS_Store
+Thumbs.db
